@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free AI Homework Solver Online — Get instant step-by-step solutions for Math, Science, English, History and Computer Science. Fast, accurate, student-friendly." />
+  <meta name="keywords" content="AI homework solver, free homework help, math solver, science homework, step by step solutions" />
+  <meta property="og:title" content="AI Homework Solver — Free Step-by-Step Solutions" />
+  <meta property="og:description" content="Solve any homework question instantly with AI. Step-by-step explanations for every subject." />
+  <title>AI Homework Solver — Free Step-by-Step Solutions Online</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet" />
+  <!-- jsPDF for PDF download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- ── HEADER ───────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🧠</span>
+        <span class="logo-text">HomeworkAI</span>
+        <span class="logo-badge">FREE</span>
+      </div>
+      <nav class="header-nav">
+        <a href="#solver">Solver</a>
+        <a href="#history">History</a>
+        <a href="#faq">FAQ</a>
+        <a href="#premium" class="nav-premium">Go Premium ✨</a>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="theme-icon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-blob blob-1"></div>
+      <div class="hero-blob blob-2"></div>
+      <div class="hero-blob blob-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        AI-Powered · Instant Answers · 100% Free
+      </div>
+      <h1 class="hero-title">Free AI Homework Solver Online</h1>
+      <p class="hero-sub">Get clear, step-by-step solutions for any homework question in seconds. Math, Science, English, History — we've got you covered.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">50K+</span><span class="stat-lbl">Questions Solved</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">4.9★</span><span class="stat-lbl">Student Rating</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">&lt;3s</span><span class="stat-lbl">Avg Response</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MAIN SOLVER ───────────────────────────────────────────── -->
+  <main class="main-wrapper" id="solver">
+    <div class="solver-card">
+
+      <!-- Card Header -->
+      <div class="card-header">
+        <h2 class="card-title">Ask Any Homework Question</h2>
+        <p class="card-sub">Type, paste, or speak your question below</p>
+      </div>
+
+      <!-- Subject + Controls Row -->
+      <div class="controls-row">
+        <div class="select-wrap">
+          <label class="select-label" for="subject">Subject</label>
+          <select id="subject" class="subject-select">
+            <option value="math">📐 Mathematics</option>
+            <option value="science">🔬 Science</option>
+            <option value="english">📖 English</option>
+            <option value="history">🏛️ History</option>
+            <option value="cs">💻 Computer Science</option>
+          </select>
+        </div>
+        <div class="toggles-wrap">
+          <label class="toggle-label">
+            <input type="checkbox" id="showSteps" checked />
+            <span class="toggle-track"></span>
+            <span class="toggle-text">Show Steps</span>
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" id="eli10Mode" />
+            <span class="toggle-track"></span>
+            <span class="toggle-text">ELI10 Mode</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-section">
+        <div class="textarea-wrap">
+          <textarea
+            id="questionInput"
+            class="question-input"
+            placeholder="e.g. Solve for x: 2x + 5 = 15&#10;&#10;or&#10;&#10;Explain the causes of World War I&#10;&#10;or&#10;&#10;What is photosynthesis?"
+            maxlength="3000"
+            rows="5"
+            aria-label="Homework question input"
+          ></textarea>
+          <div class="input-footer">
+            <span class="word-count" id="wordCount">0 / 500 words</span>
+            <button class="voice-btn" id="voiceBtn" title="Voice input" aria-label="Voice input">
+              🎤 <span class="voice-label">Speak</span>
+            </button>
+          </div>
+        </div>
+        <div class="input-actions">
+          <button class="btn-clear" id="clearBtn" title="Clear input">✕ Clear</button>
+          <button class="btn-solve" id="solveBtn">
+            <span class="solve-text">✨ Solve Now</span>
+            <span class="solve-loading" style="display:none">
+              <span class="spinner"></span> Solving...
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Error Banner -->
+      <div class="error-banner" id="errorBanner" style="display:none">
+        <span class="error-icon">⚠️</span>
+        <span id="errorMsg">Please enter a question first.</span>
+      </div>
+
+      <!-- Output Section -->
+      <div class="output-section" id="outputSection" style="display:none">
+
+        <!-- Output Header -->
+        <div class="output-header">
+          <div class="output-subject-tag" id="outputSubjectTag">📐 Mathematics</div>
+          <div class="output-actions">
+            <button class="action-btn" id="copyBtn" title="Copy answer">📋 Copy</button>
+            <button class="action-btn" id="downloadBtn" title="Download as PDF">⬇️ PDF</button>
+            <button class="action-btn eli10-btn" id="eli10Btn" title="Explain like I'm 10">🧒 ELI10</button>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="steps-section" id="stepsSection">
+          <div class="section-label">📝 Step-by-Step Solution</div>
+          <div class="steps-list" id="stepsList"></div>
+        </div>
+
+        <!-- Final Answer -->
+        <div class="answer-section">
+          <div class="section-label">✅ Final Answer</div>
+          <div class="final-answer" id="finalAnswer"></div>
+        </div>
+
+        <!-- Simple Explanation -->
+        <div class="simple-section" id="simpleSection">
+          <div class="section-label">💡 Simple Explanation</div>
+          <div class="simple-text" id="simpleText"></div>
+        </div>
+
+        <!-- ELI10 Section (hidden by default) -->
+        <div class="eli10-section" id="eli10Section" style="display:none">
+          <div class="eli10-header">
+            <span>🧒</span>
+            <span class="section-label" style="margin:0">Explain Like I'm 10</span>
+          </div>
+          <div class="eli10-text" id="eli10Text"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── AD BANNER (Free version) ────────────────────────────── -->
+    <div class="ad-banner">
+      <span class="ad-label">AD</span>
+      <span>📚 Get 40% off Chegg Study → <a href="#premium">studypal.ai/chegg</a></span>
+    </div>
+
+    <!-- ── RECENT HISTORY ────────────────────────────────────────── -->
+    <div class="history-section" id="history">
+      <div class="history-header">
+        <h3 class="history-title">📚 Recent Questions</h3>
+        <button class="btn-clear-history" id="clearHistoryBtn">Clear All</button>
+      </div>
+      <div class="history-list" id="historyList">
+        <p class="history-empty">Your recent questions will appear here.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── PREMIUM SECTION ──────────────────────────────────────── -->
+  <section class="premium-section" id="premium">
+    <div class="premium-inner">
+      <div class="premium-badge">✨ PREMIUM</div>
+      <h2 class="premium-title">Unlock Everything for $5/mo</h2>
+      <p class="premium-sub">Unlimited questions, image upload, history dashboard, multi-language support and more.</p>
+      <div class="premium-features">
+        <div class="pf-item"><span class="pf-check">✓</span> Unlimited questions</div>
+        <div class="pf-item"><span class="pf-check">✓</span> Solve from photo / image</div>
+        <div class="pf-item"><span class="pf-check">✓</span> Full history dashboard</div>
+        <div class="pf-item"><span class="pf-check">✓</span> Multi-language support</div>
+        <div class="pf-item"><span class="pf-check">✓</span> No ads</div>
+        <div class="pf-item"><span class="pf-check">✓</span> Priority AI responses</div>
+      </div>
+      <button class="btn-premium">Get Premium — $5/month →</button>
+      <p class="premium-note">No contract. Cancel anytime.</p>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────── -->
+  <section class="faq-section" id="faq">
+    <div class="faq-inner">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Is this tool free? <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Yes! HomeworkAI is completely free to use. The free version gives you up to 500 words per question and access to all core features including step-by-step solutions, ELI10 mode, copy, and PDF download. Premium ($5/month) unlocks unlimited questions, image upload, and more.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How accurate is the AI? <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Our AI is highly accurate for standard school-level questions across all subjects. It's particularly strong at Math, Science, and factual questions. For complex essay analysis or edge cases, we recommend verifying with your teacher. We're constantly improving accuracy.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Can it solve math problems? <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Absolutely. Math is one of our strongest subjects. HomeworkAI can solve algebra, geometry, calculus, trigonometry, statistics, and more. Just type your equation or problem and select "Mathematics" as the subject. It will show every formula and step clearly.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Is my data private? <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Your questions are processed to generate answers and are not stored on our servers. Recent question history is saved locally in your browser only (localStorage) and never sent to any third party. You can clear your history at any time.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Does it work on mobile? <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-a">
+            Yes! HomeworkAI is fully responsive and works great on phones, tablets, and desktops. The voice input feature works on mobile too — just tap the microphone button and speak your question.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span>🧠</span> HomeworkAI
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Contact</a>
+        <a href="#">Blog</a>
+      </div>
+      <div class="footer-copy">© 2026 HomeworkAI · Free AI Homework Solver Online</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
